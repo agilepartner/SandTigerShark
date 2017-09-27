@@ -11,3 +11,6 @@ https://agilepartner.visualstudio.com/AP-SandTigerShark
 
 Azure environment :<br/>
 http://sandtigershark.azurewebsites.net
+
+Firebase :  
+https://console.firebase.google.com/project/sandtigershark-dev/overview
