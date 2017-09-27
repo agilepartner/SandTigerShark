@@ -10,4 +10,4 @@ Visual Studio Team Services (Continuous integration) :<br/>
 https://agilepartner.visualstudio.com/AP-SandTigerShark
 
 Azure environment :<br/>
-https://sandtigershark.scm.azurewebsites.net/
+http://sandtigershark.azurewebsites.net
