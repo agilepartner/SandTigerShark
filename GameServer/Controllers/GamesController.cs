@@ -1,5 +1,10 @@
+using GameServer.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using SandTigerShark.Models;
 using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 
 namespace SandTigerShark.Controllers
 {
@@ -7,16 +12,26 @@ namespace SandTigerShark.Controllers
     public class GamesController : Controller
     {
 
+        private GameRepository gameRepository = new GameRepository();
+
         [HttpGet("new/{userToken}")]
         public string GetNewGameId(string userToken)
         {
-            throw new NotImplementedException();
+            return gameRepository.GetOrCreateNewGame(userToken);
         }
 
         [HttpGet("gameState/{gameId}")]
-        public string GetGameState(string gameId)
+        public HttpResponseMessage GetGameState(string gameId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
+            GameStatus gameStatus = gameRepository.GetGameStatus(gameId);
+            if (gameStatus != null)
+            {
+                response.Content = new ObjectContent<GameStatus>(gameStatus, new JsonMediaTypeFormatter(), "application/jsons");
+                response.StatusCode = HttpStatusCode.OK;
+               
+            }
+            return response;
         }
 
         [HttpPost]

@@ -6,31 +6,24 @@ namespace SandTigerShark.Repositories
     public class UserRepositoryTest
     {
 
-        [Fact]
-        public void PassingTest()
+        [Theory]
+        [InlineData("User1")]
+        [InlineData("User2")]
+        [InlineData("UnkonwnUser")]
+        public void UserRepositoryCannotReturnNullToken(string userName)
         {
-            Assert.Equal(4, Add(2, 2));
-        }
-
-        [Fact]
-        public void FailingTest()
-        {
-            Assert.Equal(5, Add(2, 2));
-        }
-
-        int Add(int x, int y)
-        {
-            return x + y;
+            Assert.NotNull(new UserRepository().GetUserToken(userName));
         }
 
         [Theory]
         [InlineData("User1")]
         [InlineData("User2")]
         [InlineData("UnkonwnUser")]
-        [InlineData(null)]
-        public void UserRepositoryCannotReturnNullToken(string userName)
+        public void UserRepositoryReturnTheSameTokenForAGivenUser(string userName)
         {
-            Assert.NotNull(new UserRepository().GetUserToken(userName));
+            Assert.Equal(
+                new UserRepository().GetUserToken(userName),
+                new UserRepository().GetUserToken(userName));
         }
 
 

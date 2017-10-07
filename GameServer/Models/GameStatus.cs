@@ -1,6 +1,5 @@
 namespace SandTigerShark.Models
 {
-    
     public class GameStatus
     {
 
