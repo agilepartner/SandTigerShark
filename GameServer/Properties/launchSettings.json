@@ -19,7 +19,7 @@
     "SandTigerShark": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/sandbox",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
