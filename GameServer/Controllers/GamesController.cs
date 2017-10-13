@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Threading.Tasks;
 
 namespace SandTigerShark.Controllers
 {
@@ -21,17 +22,10 @@ namespace SandTigerShark.Controllers
         }
 
         [HttpGet("gameState/{gameId}")]
-        public HttpResponseMessage GetGameState(string gameId)
+        public async Task<IActionResult> GetGameState(string gameId)
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
-            GameStatus gameStatus = gameRepository.GetGameStatus(gameId);
-            if (gameStatus != null)
-            {
-                response.Content = new ObjectContent<GameStatus>(gameStatus, new JsonMediaTypeFormatter(), "application/jsons");
-                response.StatusCode = HttpStatusCode.OK;
-               
-            }
-            return response;
+            GameStatus gameStatus = await gameRepository.GetGameStatus(gameId);
+            return Ok(gameStatus);
         }
 
         [HttpPost]

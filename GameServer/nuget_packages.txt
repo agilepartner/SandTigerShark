@@ -1,8 +1,0 @@
-Here the list of nuget packages used : 
-
-- Microsoft.AspNetCore.All (2.0.0)
-- Microsoft.NET.Test.Sdk (15.3.0)
-- WinInsider.System.Net.Http.Formatting (1.0.5)
-- xunit (2.0.0)
-- xunit.runner.console (2.0.0)
-- xunit.runner.visualstudio (2.0.0)

@@ -1,21 +1,25 @@
 ﻿using SandTigerShark.Models;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameServer.Repositories
 {
-    public class GameRepository
+    internal class GameRepository
     {
+        private static ConcurrentDictionary<string, GameStatus> statusesFromUserId = new ConcurrentDictionary<string, GameStatus>();
 
-        private static ConcurrentDictionary<String, GameStatus> statusesFromUserId = new ConcurrentDictionary<String, GameStatus>();
-
-
-        public GameStatus GetGameStatus(String gameId)
+        public Task<GameStatus> GetGameStatus(string gameId)
         {
-            return statusesFromUserId.FirstOrDefault(entry => entry.Value.GetId().Equals(gameId)).Value;
+            var gameStatus = statusesFromUserId.SingleOrDefault(entry => entry.Value.GetId().Equals(gameId)).Value;
+
+            if(gameStatus == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return Task.FromResult(gameStatus);
         }
 
         public string GetOrCreateNewGame(string userToken)

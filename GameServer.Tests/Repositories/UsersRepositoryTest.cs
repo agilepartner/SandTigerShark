@@ -1,6 +1,7 @@
+using SandTigerShark.Repositories;
 using Xunit;
 
-namespace SandTigerShark.Repositories
+namespace SandTigerShark.GameServer.Tests
 {
 
     public class UserRepositoryTest

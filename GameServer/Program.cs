@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace SandTigerShark
+namespace SandTigerShark.GameServer
 {
     public class Program
     {
