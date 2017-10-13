@@ -2,9 +2,6 @@ using GameServer.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using SandTigerShark.Models;
 using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
 namespace SandTigerShark.Controllers
@@ -12,8 +9,12 @@ namespace SandTigerShark.Controllers
     [Route("api/[controller]")]
     public class GamesController : Controller
     {
+        private readonly IGameRepository gameRepository;
 
-        private GameRepository gameRepository = new GameRepository();
+        public GamesController(IGameRepository gameRepository)
+        {
+            this.gameRepository = gameRepository;
+        }
 
         [HttpGet("new/{userToken}")]
         public string GetNewGameId(string userToken)
@@ -33,7 +34,5 @@ namespace SandTigerShark.Controllers
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

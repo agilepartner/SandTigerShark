@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameServer.Repositories
 {
-    internal class GameRepository
+    internal class GameRepository : IGameRepository
     {
         private static ConcurrentDictionary<string, GameStatus> statusesFromUserId = new ConcurrentDictionary<string, GameStatus>();
 
