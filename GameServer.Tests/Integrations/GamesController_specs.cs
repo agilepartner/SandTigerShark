@@ -15,7 +15,7 @@ namespace SandTigerShark.GameServer.Tests.Integrations
             [Fact]
             public async void then_I_get_a_not_found_status_code()
             {
-                using (var response = await Client.GetAsync("api/games/tarteenpion"))
+                using (var response = await Client.GetAsync("api/games/gameState/tarteenpion"))
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     response.StatusCode.Should().Be(HttpStatusCode.NotFound);

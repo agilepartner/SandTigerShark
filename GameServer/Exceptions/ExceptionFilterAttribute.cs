@@ -9,13 +9,15 @@ namespace SandTigerShark.GameServer.Exceptions
 {
     public abstract class ExceptionFilterAttribute : Microsoft.AspNetCore.Mvc.Filters.ExceptionFilterAttribute
     {
-        private readonly ExceptionConfiguration _defaultExceptionConfiguration;
-        private readonly IDictionary<Type, ExceptionConfiguration> _exceptionConfigurations;
+        private readonly ILogger logger;
+        private readonly ExceptionConfiguration defaultExceptionConfiguration;
+        private readonly IDictionary<Type, ExceptionConfiguration> exceptionConfigurations;
 
-        public ExceptionFilterAttribute()
+        public ExceptionFilterAttribute(ILogger logger)
         {
-            _defaultExceptionConfiguration = new ExceptionConfiguration { StatusCode = HttpStatusCode.InternalServerError, Log = LogCritical, ExportMessage = false };
-            _exceptionConfigurations = new Dictionary<Type, ExceptionConfiguration>();
+            this.logger = logger;
+            defaultExceptionConfiguration = new ExceptionConfiguration { StatusCode = HttpStatusCode.InternalServerError, Log = LogCritical, ExportMessage = false };
+            exceptionConfigurations = new Dictionary<Type, ExceptionConfiguration>();
 
             RegisterExceptionConfigurations();
         }
@@ -24,7 +26,7 @@ namespace SandTigerShark.GameServer.Exceptions
 
         private void RegisterException<TException>(ExceptionConfiguration configuration)
         {
-            _exceptionConfigurations.Add(typeof(TException), configuration);
+            exceptionConfigurations.Add(typeof(TException), configuration);
         }
 
         protected void RegisterWarning<TException>(HttpStatusCode statusCode, bool exportMessage = true)
@@ -51,7 +53,7 @@ namespace SandTigerShark.GameServer.Exceptions
         {
             var exception = context.Exception;
             var exceptionType = exception.GetType();
-            var exceptionConfiguration = _exceptionConfigurations.ContainsKey(exceptionType) ? _exceptionConfigurations[exceptionType] : _defaultExceptionConfiguration;
+            var exceptionConfiguration = exceptionConfigurations.ContainsKey(exceptionType) ? exceptionConfigurations[exceptionType] : defaultExceptionConfiguration;
 
             exceptionConfiguration.Log(exception);
 
@@ -66,12 +68,12 @@ namespace SandTigerShark.GameServer.Exceptions
 
         private void LogWarning(Exception exception)
         {
-            //_logger.LogWarning(new EventId(), exception, exception.Message);
+            logger.LogWarning(new EventId(), exception, exception.Message);
         }
 
         private void LogCritical(Exception exception)
         {
-            //_logger.LogCritical(new EventId(), exception, $"An unhandled exception occured () : {exception.Message}");
+            logger.LogCritical(new EventId(), exception, $"An unhandled exception occured () : {exception.Message}");
         }
     }
 }

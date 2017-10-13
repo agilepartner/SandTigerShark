@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace SandTigerShark.GameServer
 {
@@ -17,8 +19,11 @@ namespace SandTigerShark.GameServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IGameRepository, GameRepository>()
-                    .AddMvc(c => c.Filters.Add(new ExceptionMapper()));
+            LoggerFactory loggerFactory = ConfigureLogging();
+
+            services.AddSingleton(loggerFactory)
+                    .AddScoped<IGameRepository, GameRepository>()
+                    .AddMvc(c => c.Filters.Add(new ExceptionMapper(loggerFactory.CreateLogger<ExceptionMapper>())));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -28,6 +33,16 @@ namespace SandTigerShark.GameServer
                 app.UseDeveloperExceptionPage();
             }
             app.UseMvc();
+        }
+
+        private LoggerFactory ConfigureLogging()
+        {
+            var loggerFactory = new LoggerFactory();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"))
+                         .AddDebug()
+                         .AddNLog();
+
+            return loggerFactory;
         }
     }
 }
