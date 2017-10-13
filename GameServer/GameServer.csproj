@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <StartupObject>SandTigerShark.Program</StartupObject>
+    <StartupObject>SandTigerShark.GameServer.Program</StartupObject>
     <AssemblyName>SandTigerShark.GameServer</AssemblyName>
     <RootNamespace>SandTigerShark.GameServer</RootNamespace>
   </PropertyGroup>
@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="WinInsider.System.Net.Http.Formatting" Version="1.0.5" />
-    <PackageReference Include="xunit" Version="2.3.0" />
     <PackageReference Include="xunit.runner.console" Version="2.3.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
   </ItemGroup>
