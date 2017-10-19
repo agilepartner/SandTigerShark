@@ -8,9 +8,9 @@ Scenario: SpecFlow glue files are generated
 Scenario Outline: Echo
 	Given I am curious
 	When I yell '<exclamation>'
-	Then I hear '<exclamation>' echoed back
+	Then I hear '<echo>' echoed back
 
 	Examples: 
-		| exclamation    |
-		| Yodelay-yi-hoo |
-		| Helloooo       |
+		| exclamation    | echo			 |
+		| Yodelay-yi-hoo |Yodelay-yi-hoo |
+		| Helloooo       |Helloooo       |
