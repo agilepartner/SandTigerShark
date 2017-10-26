@@ -1,11 +1,14 @@
+using GameServer.Services.Repositories;
+using SandTigerShark.GameServer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace SandTigerShark.Repositories
 {
 
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
 
         private static readonly ImmutableDictionary<string, Guid> userNameToToken =
@@ -14,9 +17,14 @@ namespace SandTigerShark.Repositories
             .Add("User2", Guid.NewGuid());
 
 
-        public Guid GetUserToken(string userName)
+        public Task<Guid> GetUserToken(string userName)
         {
-            return userNameToToken.GetValueOrDefault(userName);
+            var userToken = userNameToToken.GetValueOrDefault(userName);
+            if (userToken == null || Guid.Empty.Equals(userToken))
+            {
+                throw new NotFoundException();
+            }
+            return Task.FromResult(userToken);
         }
 
 

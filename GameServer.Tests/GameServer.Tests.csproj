@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameServer.Services\GameServer.Services.csproj" />
     <ProjectReference Include="..\GameServer\GameServer.csproj" />
   </ItemGroup>
 
