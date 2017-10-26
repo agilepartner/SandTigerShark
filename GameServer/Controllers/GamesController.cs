@@ -16,12 +16,6 @@ namespace SandTigerShark.Controllers
             this.gameRepository = gameRepository;
         }
 
-        [HttpGet("{userToken}")]
-        public string GetNewGameId(string userToken)
-        {
-            return gameRepository.GetOrCreateNewGame(userToken);
-        }
-
         [HttpGet("gameState/{gameId}")]
         public async Task<IActionResult> GetGameState(string gameId)
         {

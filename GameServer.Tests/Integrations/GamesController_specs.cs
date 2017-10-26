@@ -31,8 +31,7 @@ namespace SandTigerShark.GameServer.Tests.Integrations
             [Fact]
             public async void then_I_cant_get_a_token()
             {
-                
-                using (var response = await Client.GetAsync("api/games/games"))
+                using (var response = await Client.GetAsync("api/games/available"))
                 {
                     var result = await response.Content.ReadAsStringAsync();
                     response.StatusCode.Should().Be(HttpStatusCode.NotFound);
