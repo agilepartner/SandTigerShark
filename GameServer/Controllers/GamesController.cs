@@ -30,7 +30,7 @@ namespace SandTigerShark.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody]string command)
+        public void Post([FromBody]string instruction)
         {
             throw new NotImplementedException();
         }

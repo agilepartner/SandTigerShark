@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using SandTigerShark.GameServer.Repositories;
+using SandTigerShark.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SandTigerShark.GameServer
@@ -24,6 +26,7 @@ namespace SandTigerShark.GameServer
 
             services.AddSingleton(loggerFactory)
                     .AddScoped<IGameRepository, GameRepository>()
+                    .AddScoped<IUserRepository, UserRepository>()
                     .AddMvc(c => c.Filters.Add(new ExceptionMapper(loggerFactory.CreateLogger<ExceptionMapper>())));
 
             services.AddSwaggerGen(c =>
