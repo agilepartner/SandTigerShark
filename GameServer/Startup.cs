@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using SandTigerShark.GameServer.Exceptions;
 using SandTigerShark.GameServer.Services;
+using SandTigerShark.GameServer.Services.Configurations;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SandTigerShark.GameServer
@@ -24,7 +25,8 @@ namespace SandTigerShark.GameServer
         {
             LoggerFactory loggerFactory = ConfigureLogging();
 
-            services.AddSingleton(loggerFactory)                    
+            services.Configure<AzureConfig>(Configuration.GetSection("Azure"))
+                    .AddSingleton(loggerFactory)                    
                     .AddMvc(c => c.Filters.Add(new ExceptionMapper(loggerFactory.CreateLogger<ExceptionMapper>())));
 
             Module.Bootstrap(services);
