@@ -10,11 +10,21 @@ namespace GameServer.Services.Repositories
     {
         private static ConcurrentDictionary<string, GameStatus> statusesFromUserId = new ConcurrentDictionary<string, GameStatus>();
 
+        string IGameRepository.availableGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IGameRepository.createGame()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<GameStatus> GetGameStatus(string gameId)
         {
             var gameStatus = statusesFromUserId.SingleOrDefault(entry => entry.Value.GetId().Equals(gameId)).Value;
 
-            if(gameStatus == null)
+            if (gameStatus == null)
             {
                 throw new NotFoundException();
             }
@@ -27,6 +37,17 @@ namespace GameServer.Services.Repositories
             return statusesFromUserId.GetOrAdd(
                        userToken,
                        new GameStatus(Guid.NewGuid().ToString(), true, GameStatus.Status.IN_PROGRESS, null)).GetId();
+        }
+
+
+        Task<GameStatus> IGameRepository.GetGameStatus(string gameId)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IGameRepository.GetOrCreateNewGame(string userToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

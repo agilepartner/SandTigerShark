@@ -14,8 +14,8 @@ namespace SandTigerShark.GameServer.Tests
         public void UserRepositoryReturnTheSameTokenForAGivenUser(string userName)
         {
             Assert.Equal(
-    new UserRepository().GetUserToken(userName),
-    new UserRepository().GetUserToken(userName));
+                new UserRepository().GetUserToken(userName),
+                new UserRepository().GetUserToken(userName));
         }
 
 
