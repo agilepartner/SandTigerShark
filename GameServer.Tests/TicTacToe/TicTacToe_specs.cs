@@ -38,6 +38,8 @@ namespace SandTigerShark.GameServer.Tests.TicTacToe
         {
             var command = new Play();
             await ticTacToeService.Play(command);
+
+            A.CallTo(() => restProxy.PostAsync<Play>(configuration.TicTacToe, command, null)).MustHaveHappened();
         }
     }
 }
