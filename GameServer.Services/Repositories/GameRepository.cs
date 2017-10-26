@@ -1,6 +1,7 @@
 ﻿using SandTigerShark.Services.Models;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,21 +9,29 @@ namespace GameServer.Services.Repositories
 {
     internal class GameRepository : IGameRepository
     {
-        private static ConcurrentDictionary<string, GameStatus> statusesFromUserId = new ConcurrentDictionary<string, GameStatus>();
+        // private static ConcurrentDictionary<string, GameStatus> games = new ConcurrentDictionary<string, GameStatus>();
+        private List<Guid> games = new List<Guid>();
 
-        string IGameRepository.GetAvailableGame()
+        Guid IGameRepository.GetAvailableGame()
         {
-            throw new NotImplementedException();
+            if (this.games.Count == 0)
+            {
+                return Guid.Empty;
+            }
+
+            return this.games.ElementAt(0);
         }
 
         void IGameRepository.CreateGame()
         {
-            throw new NotImplementedException();
+            this.games.Add(Guid.NewGuid());
         }
 
+        /*
+         * Rollback
         public Task<GameStatus> GetGameStatus(string gameId)
         {
-            var gameStatus = statusesFromUserId.SingleOrDefault(entry => entry.Value.GetId().Equals(gameId)).Value;
+            var gameStatus = games.SingleOrDefault(entry => entry.Value.GetId().Equals(gameId)).Value;
 
             if (gameStatus == null)
             {
@@ -31,6 +40,7 @@ namespace GameServer.Services.Repositories
 
             return Task.FromResult(gameStatus);
         }
+        */
 
         // public string GetOrCreateNewGame(string userToken)
         // {
