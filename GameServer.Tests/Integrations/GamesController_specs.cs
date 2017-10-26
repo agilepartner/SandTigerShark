@@ -45,10 +45,10 @@ namespace SandTigerShark.GameServer.Tests.Integrations
                 responseAvailable_NotFound.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
                 var responseCreateGame = await Client.PostAsync("api/games", null);
-                responseCreateGame.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+                responseCreateGame.StatusCode.Should().Be(HttpStatusCode.OK);
 
                 var responseAvailable_Found = await Client.GetAsync("api/games/available");
-                responseAvailable_Found.StatusCode.Should().Be(HttpStatusCode.NotFound);
+                responseAvailable_Found.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
