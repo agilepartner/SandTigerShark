@@ -1,4 +1,4 @@
-using GameServer.Repositories;
+using GameServer.Services.Repositories;
 using SandTigerShark.GameServer.Repositories;
 using System;
 using System.Collections.Generic;
