@@ -16,6 +16,26 @@ namespace SandTigerShark.Controllers
             this.gameRepository = gameRepository;
         }
 
+        [HttpGet("available")]
+        public IActionResult GetAvailableGame()
+        {
+            Guid availableGameId = this.gameRepository.GetAvailableGame();
+            if (Guid.Empty.Equals(availableGameId))
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("")]
+        public IActionResult Post()
+        {
+            this.gameRepository.CreateGame();
+            return Ok();
+        }
+
+
         [HttpGet("gameState/{gameId}")]
         public async Task<IActionResult> GetGameState(string gameId)
         {
@@ -26,10 +46,6 @@ namespace SandTigerShark.Controllers
             });
         }
 
-        [HttpPost]
-        public void Post([FromBody]string instruction)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
