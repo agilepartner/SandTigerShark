@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using SandTigerShark.Models;
+﻿using SandTigerShark.Services.Models;
+using System.Threading.Tasks;
 
-namespace GameServer.Repositories
+namespace GameServer.Services.Repositories
 {
     public interface IGameRepository
     {

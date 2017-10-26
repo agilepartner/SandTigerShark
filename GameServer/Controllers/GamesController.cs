@@ -1,6 +1,6 @@
-using GameServer.Repositories;
+using GameServer.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using SandTigerShark.Models;
+using SandTigerShark.Services.Models;
 using System;
 using System.Threading.Tasks;
 

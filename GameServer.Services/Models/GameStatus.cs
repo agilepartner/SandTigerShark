@@ -1,4 +1,4 @@
-namespace SandTigerShark.Models
+namespace SandTigerShark.Services.Models
 {
     public class GameStatus
     {

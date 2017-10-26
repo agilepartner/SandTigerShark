@@ -1,9 +1,8 @@
-﻿using GameServer.Repositories;
+﻿using GameServer.Services.Repositories;
 using Microsoft.Extensions.Logging;
-using SandTigerShark.GameServer.Exceptions;
 using System.Net;
 
-namespace SandTigerShark.GameServer
+namespace SandTigerShark.GameServer.Exceptions
 {
     public class ExceptionMapper : ExceptionFilterAttribute
     {
