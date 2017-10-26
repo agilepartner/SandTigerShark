@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using SandTigerShark.Models;
 using SandTigerShark.Repositories;
 
 namespace SandTigerShark.Controllers

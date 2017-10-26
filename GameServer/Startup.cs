@@ -1,10 +1,12 @@
-﻿using GameServer.Repositories;
+﻿using GameServer.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using SandTigerShark.GameServer.Exceptions;
+using SandTigerShark.GameServer.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SandTigerShark.GameServer
@@ -22,10 +24,11 @@ namespace SandTigerShark.GameServer
         {
             LoggerFactory loggerFactory = ConfigureLogging();
 
-            services.AddSingleton(loggerFactory)
-                    .AddScoped<IGameRepository, GameRepository>()
+            services.AddSingleton(loggerFactory)                    
                     .AddMvc(c => c.Filters.Add(new ExceptionMapper(loggerFactory.CreateLogger<ExceptionMapper>())));
 
+            Module.Bootstrap(services);
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "SandTigerShark api", Version = "v1" });
