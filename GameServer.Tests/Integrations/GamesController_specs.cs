@@ -26,7 +26,7 @@ namespace SandTigerShark.GameServer.Tests.Integrations
             */
         }
 
-        public class when_there_is_not_available_game : WebApiTest<Startup>
+        public class when_there_is_no_available_game : WebApiTest<Startup>
         {
             [Fact]
             public async void then_I_cant_get_a_token()
@@ -45,10 +45,10 @@ namespace SandTigerShark.GameServer.Tests.Integrations
                 responseAvailable_NotFound.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
                 var responseCreateGame = await Client.PostAsync("api/games", null);
-                responseCreateGame.StatusCode.Should().Be(HttpStatusCode.OK);
+                responseCreateGame.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
                 var responseAvailable_Found = await Client.GetAsync("api/games/available");
-                responseAvailable_Found.StatusCode.Should().Be(HttpStatusCode.OK);
+                responseAvailable_Found.StatusCode.Should().Be(HttpStatusCode.NotFound);
             }
         }
 

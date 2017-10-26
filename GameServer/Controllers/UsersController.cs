@@ -19,7 +19,7 @@ namespace SandTigerShark.Controllers
         public async Task<IActionResult> GetToken(string userName)
         {
             Guid token = await this.userRepository.GetUserToken(userName);
-            return Ok(token.ToString());
+            return Ok(token);
         }
 
      

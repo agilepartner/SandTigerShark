@@ -15,6 +15,7 @@ namespace SandTigerShark.GameServer.Exceptions
         protected override void RegisterExceptionConfigurations()
         {
             RegisterWarning<NotFoundException>(HttpStatusCode.NotFound);
+            RegisterWarning<NotAuthorizedException>(HttpStatusCode.Unauthorized);
         }
     }
 }

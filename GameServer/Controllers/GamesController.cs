@@ -17,35 +17,32 @@ namespace SandTigerShark.Controllers
         }
 
         [HttpGet("available")]
-        public IActionResult GetAvailableGame()
+        public async Task<IActionResult> GetAvailableGame()
         {
-            Guid availableGameId = this.gameRepository.GetAvailableGame();
+            Guid availableGameId = await gameRepository.GetAvailableGame();
             if (Guid.Empty.Equals(availableGameId))
             {
                 return NotFound();
             }
-
             return Ok();
         }
 
         [HttpPost("")]
-        public IActionResult Post()
+        public async Task<IActionResult> CreateGame()
         {
-            this.gameRepository.CreateGame();
+            await gameRepository.CreateGame();
             return Ok();
         }
 
 
         [HttpGet("gameState/{gameId}")]
-        public async Task<IActionResult> GetGameState(string gameId)
+        public async Task<IActionResult> GetGameState(Guid gameId)
         {
-            return await HttpContext.Call(async (userToken) =>
+            return await HttpContext.Call(async(userToken) =>
             {
                 var gameStatus = await gameRepository.GetGameStatus(gameId, userToken);
                 return Ok(gameStatus);
             });
         }
-
-        
     }
 }

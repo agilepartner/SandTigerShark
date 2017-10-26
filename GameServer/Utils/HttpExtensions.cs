@@ -14,25 +14,30 @@ namespace SandTigerShark.GameServer.Utils
 
         public static bool TryGetUserToken(
             this HttpContext httpContext,
-            out string userToken)
+            out Guid userToken)
         {
             StringValues authorizationValues;
-            userToken = null;
+            userToken = Guid.Empty;
 
             if (httpContext.Request.Headers.TryGetValue(userTokenKey, out authorizationValues)
                 && authorizationValues.Count == 1
                 && !string.IsNullOrEmpty(authorizationValues.Single()))
             {
-                userToken = authorizationValues.Single();
+                var userTokenString = authorizationValues.Single();
+
+                if (Guid.TryParse(userTokenString, out userToken))
+                {
+                    return true;
+                }
             }
-            return !string.IsNullOrEmpty(userToken);
+            return false;
         }
 
         public static Task<IActionResult> Call(
             this HttpContext httpContext,
-            Func<string, Task<IActionResult>> onTokenSuccessfullyGot)
+            Func<Guid, Task<IActionResult>> onTokenSuccessfullyGot)
         {
-            string userToken = null;
+            Guid userToken = Guid.Empty;
 
             if (httpContext.TryGetUserToken(out userToken))
             {

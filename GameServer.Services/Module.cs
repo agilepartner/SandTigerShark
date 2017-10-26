@@ -16,7 +16,7 @@ namespace SandTigerShark.GameServer.Services
             services.AddScoped<IGameRepository, GameRepository>()
                     .AddScoped<IRestProxy, RestProxy>()
                     .AddScoped<ITicTacToeService, TicTacToeService>()
-                    .AddScoped<IGameRepository, GameRepository>()
+                    .AddSingleton<IGameRepository, GameRepository>()
                     .AddScoped<IUserRepository, UserRepository>();
         }
     }

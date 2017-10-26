@@ -6,8 +6,8 @@ namespace GameServer.Services.Repositories
 {
     public interface IGameRepository
     {
-        string GetAvailableGame();
-        void CreateGame();
-        Task<GameStatus> GetGameStatus(string gameId, string userToken);
+        Task<Guid> GetAvailableGame();
+        Task CreateGame();
+        Task<GameStatus> GetGameStatus(Guid gameId, Guid userToken);
     }
 }

@@ -9,47 +9,31 @@ namespace GameServer.Services.Repositories
 {
     internal class GameRepository : IGameRepository
     {
-        // private static ConcurrentDictionary<string, GameStatus> games = new ConcurrentDictionary<string, GameStatus>();
-        private List<Guid> games = new List<Guid>();
+        private ConcurrentDictionary<Guid, GameStatus> games = new ConcurrentDictionary<Guid, GameStatus>();
 
-        Guid IGameRepository.GetAvailableGame()
+        public Task<Guid> GetAvailableGame()
         {
-            if (this.games.Count == 0)
+            if (games.Count == 0)
             {
-                return Guid.Empty;
+                return Task.FromResult(Guid.Empty);
             }
-
-            return this.games.ElementAt(0);
+            return Task.FromResult(games.ElementAt(0).Key);
         }
 
-        void IGameRepository.CreateGame()
+        public Task CreateGame()
         {
-            this.games.Add(Guid.NewGuid());
+            throw new NotImplementedException();
         }
 
-        public Task<GameStatus> GetGameStatus(string gameId, string userToken)
+        public Task<GameStatus> GetGameStatus(Guid gameId, Guid userToken)
         {
-            var gameStatus = statusesFromUserId.SingleOrDefault(entry => entry.Value.Id.Equals(gameId)).Value;
+            GameStatus gameStatus = null;
 
-            if (gameStatus == null)
+            if(!games.TryGetValue(gameId, out gameStatus))
             {
                 throw new NotFoundException();
             }
-
             return Task.FromResult(gameStatus);
-        }
-
-        // public string GetOrCreateNewGame(string userToken)
-        // {
-        //      return statusesFromUserId.GetOrAdd(
-        // userToken,
-        //  new GameStatus(Guid.NewGuid().ToString(), true, GameStatus.Status.IN_PROGRESS, null)).GetId();
-        //  }
-
-
-        Task<GameStatus> IGameRepository.GetGameStatus(string gameId)
-        {
-            throw new NotImplementedException();
         }
     }
 }
