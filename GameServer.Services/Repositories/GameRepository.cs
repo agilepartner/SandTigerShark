@@ -20,9 +20,9 @@ namespace GameServer.Services.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<GameStatus> GetGameStatus(string gameId)
+        public Task<GameStatus> GetGameStatus(string gameId, string userToken)
         {
-            var gameStatus = statusesFromUserId.SingleOrDefault(entry => entry.Value.GetId().Equals(gameId)).Value;
+            var gameStatus = statusesFromUserId.SingleOrDefault(entry => entry.Value.Id.Equals(gameId)).Value;
 
             if (gameStatus == null)
             {
@@ -30,19 +30,6 @@ namespace GameServer.Services.Repositories
             }
 
             return Task.FromResult(gameStatus);
-        }
-
-        // public string GetOrCreateNewGame(string userToken)
-        // {
-        //      return statusesFromUserId.GetOrAdd(
-        // userToken,
-        //  new GameStatus(Guid.NewGuid().ToString(), true, GameStatus.Status.IN_PROGRESS, null)).GetId();
-        //  }
-
-
-        Task<GameStatus> IGameRepository.GetGameStatus(string gameId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

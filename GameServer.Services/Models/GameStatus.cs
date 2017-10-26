@@ -2,37 +2,19 @@ namespace SandTigerShark.Services.Models
 {
     public class GameStatus
     {
-
         public enum Status { IN_PROGRESS, LOST, WON, DRAW };
 
-        public string id;
-        public bool canIPlay;
-        public Status status;
-        public object lastGameState;
+        public string Id { get; private set; }
+        public bool CanIPlay { get; set; }
+        public Status State { get; set; }
+        public object LastGameState { get; set; }
 
         public GameStatus(string id, bool canIPlay, Status status, object lastGameState)
         {
-            this.id = id;
-            this.canIPlay = canIPlay;
-            this.status = status;
-            this.lastGameState = lastGameState;
+            Id = id;
+            CanIPlay = canIPlay;
+            State = status;
+            LastGameState = lastGameState;
         }
-
-        public string GetId()
-        {
-            return id;
-        }
-
-        public bool CanIPlay()
-        {
-            return this.canIPlay;
-        }
-
-        public Status GetStatus()
-        {
-            return this.status;
-        }
-
     }
-
 }

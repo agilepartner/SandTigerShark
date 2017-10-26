@@ -1,6 +1,6 @@
 using GameServer.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using SandTigerShark.Services.Models;
+using SandTigerShark.GameServer.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -19,8 +19,11 @@ namespace SandTigerShark.Controllers
         [HttpGet("gameState/{gameId}")]
         public async Task<IActionResult> GetGameState(string gameId)
         {
-            GameStatus gameStatus = await gameRepository.GetGameStatus(gameId);
-            return Ok(gameStatus);
+            return await HttpContext.Call(async (userToken) =>
+            {
+                var gameStatus = await gameRepository.GetGameStatus(gameId, userToken);
+                return Ok(gameStatus);
+            });
         }
 
         [HttpPost]
