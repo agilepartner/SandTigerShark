@@ -19,7 +19,7 @@
     "SandTigerShark": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/swagger/ui",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

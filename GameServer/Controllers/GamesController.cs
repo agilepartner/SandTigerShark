@@ -2,6 +2,7 @@ using GameServer.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using SandTigerShark.GameServer.Utils;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace SandTigerShark.Controllers
@@ -11,12 +12,18 @@ namespace SandTigerShark.Controllers
     {
         private readonly IGameRepository gameRepository;
 
+        /// <summary>
+        /// Manage your games through this api
+        /// </summary>
+        /// <param name="gameRepository"></param>
         public GamesController(IGameRepository gameRepository)
         {
             this.gameRepository = gameRepository;
         }
 
         [HttpGet("available")]
+        [ProducesResponseType(typeof(Guid), 200)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAvailableGame()
         {
             Guid availableGameId = await gameRepository.GetAvailableGame();
@@ -24,7 +31,7 @@ namespace SandTigerShark.Controllers
             {
                 return NotFound();
             }
-            return Ok();
+            return Ok(availableGameId);
         }
 
         [HttpPost("")]
@@ -33,7 +40,6 @@ namespace SandTigerShark.Controllers
             await gameRepository.CreateGame();
             return Ok();
         }
-
 
         [HttpGet("gameState/{gameId}")]
         public async Task<IActionResult> GetGameState(Guid gameId)
