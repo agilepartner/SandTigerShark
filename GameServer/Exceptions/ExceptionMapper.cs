@@ -1,5 +1,5 @@
-﻿using GameServer.Services.Repositories;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using SandTigerShark.GameServer.Services.Exceptions;
 using System.Net;
 
 namespace SandTigerShark.GameServer.Exceptions
@@ -15,7 +15,11 @@ namespace SandTigerShark.GameServer.Exceptions
         protected override void RegisterExceptionConfigurations()
         {
             RegisterWarning<NotFoundException>(HttpStatusCode.NotFound);
-            RegisterWarning<NotAuthorizedException>(HttpStatusCode.Unauthorized);
+            RegisterWarning<GameNotAvailableException>(HttpStatusCode.NotFound);
+            RegisterWarning<GameTypeNotAvailableException>(HttpStatusCode.MethodNotAllowed);
+            RegisterWarning<InvalidCommandException>(HttpStatusCode.MethodNotAllowed);
+            RegisterWarning<EntityAlreadyExistsException>(HttpStatusCode.MethodNotAllowed);
+            RegisterWarning<NotAuthorizedException>(HttpStatusCode.Unauthorized, exportMessage: false);
         }
     }
 }

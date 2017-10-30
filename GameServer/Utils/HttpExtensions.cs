@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using SandTigerShark.GameServer.Exceptions;
+using SandTigerShark.GameServer.Services.Exceptions;
+using SandTigerShark.GameServer.Services.Users;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,15 +34,21 @@ namespace SandTigerShark.GameServer.Utils
             return false;
         }
 
-        public static Task<IActionResult> Call(
+        public static async Task<IActionResult> Invoke(
             this HttpContext httpContext,
-            Func<Guid, Task<IActionResult>> onTokenSuccessfullyGot)
+            IUserRepository userRepository,
+            Func<Guid, Task<IActionResult>> onUserAutenticated)
         {
             Guid userToken = Guid.Empty;
 
             if (httpContext.TryGetUserToken(out userToken))
             {
-                return onTokenSuccessfullyGot(userToken);
+                var user = await userRepository.GetByToken(userToken);
+
+                if (user != null)
+                {
+                    return await onUserAutenticated(userToken);
+                }
             }
             throw new NotAuthorizedException();
         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace SandTigerShark.GameServer.Exceptions
+namespace SandTigerShark.GameServer.Services.Exceptions
 {
-    internal class NotAuthorizedException : Exception
+    public class NotAuthorizedException : Exception
     {
         public NotAuthorizedException()
         {

@@ -1,9 +1,7 @@
-﻿using GameServer.Services.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-using SandTigerShark.GameServer.Repositories;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SandTigerShark.GameServer.Services.Games;
 using SandTigerShark.GameServer.Services.Http;
-using SandTigerShark.GameServer.Services.TicTacToe;
-using SandTigerShark.Repositories;
+using SandTigerShark.GameServer.Services.Users;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SandTigerShark.GameServer.Tests")]
@@ -13,11 +11,12 @@ namespace SandTigerShark.GameServer.Services
     {
         public static void Bootstrap(IServiceCollection services)
         {
-            services.AddScoped<IGameRepository, GameRepository>()
-                    .AddScoped<IRestProxy, RestProxy>()
-                    .AddScoped<ITicTacToeService, TicTacToeService>()
+            services.AddScoped<IRestProxy, RestProxy>()
                     .AddSingleton<IGameRepository, GameRepository>()
-                    .AddScoped<IUserRepository, UserRepository>();
+                    .AddSingleton<IUserRepository, UserRepository>()
+                    .AddScoped<IGameFactory, GameFactory>()
+                    .AddScoped<IGameService, GameService>()
+                    .AddScoped<IUserService, UserService>();
         }
     }
 }

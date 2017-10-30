@@ -1,4 +1,4 @@
-﻿namespace SandTigerShark.GameServer.Services.TicTacToe
+﻿namespace SandTigerShark.GameServer.Services.TicTacToes
 {
     public class Play
     {

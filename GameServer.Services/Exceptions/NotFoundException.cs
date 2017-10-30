@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace GameServer.Services.Repositories
+namespace SandTigerShark.GameServer.Services.Exceptions
 {
     public class NotFoundException : Exception
     {

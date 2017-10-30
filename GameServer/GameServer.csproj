@@ -7,6 +7,10 @@
     <RootNamespace>SandTigerShark.GameServer</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.0\SandTigerShark.GameServer.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Repositories\**" />
     <Compile Remove="wwwroot\**" />
