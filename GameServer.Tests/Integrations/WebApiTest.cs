@@ -22,6 +22,7 @@ namespace SandTigerShark.GameServer.Tests.Integrations
 
             server = new TestServer(builder);
             Client = server.CreateClient();
+            Client.DefaultRequestHeaders.Add("user-token", Guid.NewGuid().ToString());
         }
 
         public HttpClient Client { get; }

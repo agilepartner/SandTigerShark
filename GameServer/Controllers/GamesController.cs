@@ -26,19 +26,25 @@ namespace SandTigerShark.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAvailableGame()
         {
-            Guid availableGameId = await gameRepository.GetAvailableGame();
-            if (Guid.Empty.Equals(availableGameId))
+            return await HttpContext.Call(async (userToken) =>
             {
-                return NotFound();
-            }
-            return Ok(availableGameId);
+                Guid availableGameId = await gameRepository.GetAvailableGame();
+                if (Guid.Empty.Equals(availableGameId))
+                {
+                    return NotFound();
+                }
+                return Ok(availableGameId);
+            });
         }
 
         [HttpPost("")]
         public async Task<IActionResult> CreateGame()
         {
-            await gameRepository.CreateGame();
-            return Ok();
+            return await HttpContext.Call(async (userToken) =>
+            {
+                await gameRepository.CreateGame();
+                return Ok();
+            });
         }
 
         [HttpGet("gameState/{gameId}")]

@@ -22,18 +22,26 @@ namespace GameServer.Services.Repositories
 
         public Task CreateGame()
         {
-            throw new NotImplementedException();
+            Guid gameToken = Guid.NewGuid();
+            games.AddOrUpdate(gameToken, new GameStatus(gameToken.ToString(), true, GameStatus.Status.IN_PROGRESS, null), (token, gameStatusOld) => gameStatusOld);
+            return Task.FromResult(gameToken);
         }
 
         public Task<GameStatus> GetGameStatus(Guid gameId, Guid userToken)
         {
             GameStatus gameStatus = null;
 
-            if(!games.TryGetValue(gameId, out gameStatus))
+            if (!games.TryGetValue(gameId, out gameStatus))
             {
                 throw new NotFoundException();
             }
             return Task.FromResult(gameStatus);
+        }
+
+        public Task Clear()
+        {
+            games.Clear();
+            return Task.FromResult(true);
         }
     }
 }
