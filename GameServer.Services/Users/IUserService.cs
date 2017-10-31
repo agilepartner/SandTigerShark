@@ -7,6 +7,6 @@ namespace SandTigerShark.GameServer.Services.Users
     public interface IUserService
     {
         Task<Guid> CreateUser(CreateUser command);
-        Task<User> GetUser(Guid userToken);
+        Task<Dtos.User> GetUser(Guid userToken);
     }
 }

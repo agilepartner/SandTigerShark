@@ -32,9 +32,15 @@ namespace SandTigerShark.GameServer.Services.Users
             return Task.FromResult(user.Token);
         }
 
-        public async Task<User> GetUser(Guid userToken)
+        public async Task<Dtos.User> GetUser(Guid userToken)
         {
-            return await repository.GetByToken(userToken);
+            var user = await repository.GetByToken(userToken);
+
+            return new Dtos.User
+            {
+                Name = user.Name,
+                Token = user.Token
+            };
         }
     }
 }

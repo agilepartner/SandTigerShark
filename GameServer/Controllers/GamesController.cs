@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SandTigerShark.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/games")]
     public class GamesController : Controller
     {
         private readonly IGameService gameService;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SandTigerShark.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UsersController : Controller
     {
         private readonly IUserService userService;
@@ -28,7 +28,7 @@ namespace SandTigerShark.Controllers
         public async Task<IActionResult> CreateUser([FromBody]CreateUser command)
         {
             var userToken = await userService.CreateUser(command);
-            return CreatedAtAction("GetToken", userToken);
+            return Created($"api/users/{userToken}", userToken);
         }
 
         /// <summary>
@@ -38,7 +38,6 @@ namespace SandTigerShark.Controllers
         /// <returns></returns>
         [HttpGet("{userToken}")]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.MethodNotAllowed)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetUser(Guid userToken)
         {

@@ -1,42 +1,92 @@
 ﻿using FluentAssertions;
+using SandTigerShark.GameServer.Services.Commands;
+using SandTigerShark.GameServer.Services.Users;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SandTigerShark.GameServer.Tests.Integrations
 {
     public class UsersController_specs
     {
+        private const string baseUrl = "api/users";
 
-        public class when_I_request_a_user_token_that_does_exist : WebApiTest<Startup>
+        public class create_user_should : WebApiTest<Startup>
         {
-
-            [Fact]
-            public async void then_I_get_a_not_empty_token()
+            public class returns_OK : create_user_should
             {
-                using (var response = await Client.GetAsync("api/users/token/userthatdoesntexist"))
+                [Fact]
+                public async Task when_user_name_does_not_exist()
                 {
-                    var result = await response.Content.ReadAsStringAsync();
-                    response.Content.Should().NotBe(Guid.Empty.ToString());
-                }
+                    var command = new CreateUser { UserName = "@yot57" };
 
+                    using (var response = await Client.PostAsync($"{baseUrl}", command))
+                    {
+                        response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+                        var result = await response.Content.ReadAsync<Guid?>();
+                        result.Should().NotBeNull();
+                        result.Should().NotBeEmpty();
+                        response.Headers.Location.OriginalString.Should().Be($"api/users/{result}");
+                    }
+                }
+            }
+
+            public class returns_method_not_allowed : create_user_should
+            {
+                [Fact]
+                public async Task when_user_already_exists()
+                {
+                    var command = new CreateUser { UserName = "@yot57" };
+
+                    await Client.PostAsync($"{baseUrl}", command);
+
+                    using (var response = await Client.PostAsync($"{baseUrl}", command))
+                    {
+                        response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
+                    }
+                }
             }
         }
 
-        public class when_I_request_a_user_token_that_does_not_exist : WebApiTest<Startup>
+        public class get_a_user : WebApiTest<Startup>
         {
-
-            [Fact]
-            public async void then_I_get_a_not_found_status_code()
+            public class that_does_not_exist : get_a_user
             {
-                using (var response = await Client.GetAsync("api/users/token/userthatdoesntexist"))
+                [Fact]
+                public async void then_a_not_found_http_status_is_received()
                 {
-                    var result = await response.Content.ReadAsStringAsync();
-                    response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-                }
+                    var unexistingUserToken = Guid.NewGuid();
 
+                    using (var response = await Client.GetAsync($"{baseUrl}/{unexistingUserToken}"))
+                    {
+                        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+                    }
+                }
+            }
+
+            public class that_exists : get_a_user
+            {
+                [Fact]
+                public async void then_i_get_a_user()
+                {
+                    var command = new CreateUser { UserName = "@yot57" };
+
+                    using (var postResponse = await Client.PostAsync($"{baseUrl}", command))
+                    {
+                        var userToken = await postResponse.Content.ReadAsync<Guid>();
+
+                        using (var getResponse = await Client.GetAsync($"api/users/{userToken}"))
+                        {
+                            getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                            var user = await getResponse.Content.ReadAsync<Services.Dtos.User>();
+                            user.Name.Should().Be(command.UserName);
+                            user.Token.Should().Be(userToken);
+                        }
+                    }
+                }
             }
         }
     }
