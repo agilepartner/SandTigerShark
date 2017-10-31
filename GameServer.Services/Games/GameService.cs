@@ -72,10 +72,6 @@ namespace SandTigerShark.GameServer.Services.Games
 
             var game = await repository.GetById(gameId);
 
-            if(game.IsAvailable())
-            {
-                throw new InvalidCommandException($"The game is still waiting for player(s)");
-            }
             await game.Play(command, userToken);
             await repository.Save(game);
         }

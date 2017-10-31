@@ -118,15 +118,6 @@ namespace SandTigerShark.GameServer.Tests.Games
                     var exception = await Assert.ThrowsAsync<InvalidCommandException>(() => gameService.Play(gameId, command, userToken));
                     exception.Message.Should().Be("Instruction is required");
                 }
-
-                [Fact]
-                public async Task when_game_is_not_started()
-                {
-                    var command = new Play { Instruction = new object() };
-
-                    var exception = await Assert.ThrowsAsync<InvalidCommandException>(() => gameService.Play(gameId, command, userToken));
-                    exception.Message.Should().Be("The game is still waiting for player(s)");
-                }
             }
 
             [Fact]

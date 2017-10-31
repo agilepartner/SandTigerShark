@@ -14,7 +14,7 @@ namespace SandTigerShark.GameServer.Tests.Integrations
 
         public class create_user_should : WebApiTest<Startup>
         {
-            public class returns_OK : create_user_should
+            public class returns_created : create_user_should
             {
                 [Fact]
                 public async Task when_user_name_does_not_exist()

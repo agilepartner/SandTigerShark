@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SandTigerShark.GameServer.Tests.Integrations
 {
@@ -18,14 +20,22 @@ namespace SandTigerShark.GameServer.Tests.Integrations
             var builder = new WebHostBuilder()
                                 .UseContentRoot(contentRoot ?? Directory.GetCurrentDirectory())
                                 .UseStartup<TStartup>()
-                                .UseEnvironment(environment);
+                                .UseEnvironment(environment)
+                                .UseConfiguration(new ConfigurationBuilder()
+                                    .SetBasePath(contentRoot ?? Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json")
+                                    .Build());
 
             server = new TestServer(builder);
             Client = server.CreateClient();
-            Client.DefaultRequestHeaders.Add("user-token", Guid.NewGuid().ToString());
         }
 
         public HttpClient Client { get; }
+
+        public async Task<HttpClient> GetClientWithUserToken(string userName = "John Doe")
+        {
+            return await server.CreateClient().WithUserToken(userName);
+        }
 
         public void Dispose()
         {

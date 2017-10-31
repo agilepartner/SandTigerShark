@@ -55,7 +55,7 @@ namespace SandTigerShark.Controllers
             return await HttpContext.Invoke(userRepository, async (userToken) =>
             {
                 var gameId = await gameService.CreateGame(command, userToken);
-                return CreatedAtAction("GetGameState", new { gameId = gameId });
+                return Created($"api/games/{gameId}", gameId);
             });
         }
 
@@ -65,7 +65,7 @@ namespace SandTigerShark.Controllers
         /// <param name="gameId"></param>
         /// <returns></returns>
         [HttpGet("{gameId}")]
-        [ProducesResponseType(typeof(GameStatus), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(GameStatus), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetGameState(Guid gameId)
