@@ -40,7 +40,7 @@ namespace SandTigerShark.GameServer.Services.Games
             return Player1 == player || Player2 == player;
         }
 
-        public void AddPlayer(Guid player)
+        internal void AddPlayer(Guid player)
         {
             if(!IsAvailable())
             {
@@ -62,15 +62,28 @@ namespace SandTigerShark.GameServer.Services.Games
 
         public async Task Play(Play command, Guid player)
         {
-            if(IsAvailable() && !IsPlaying(player))
+            if(IsAvailable())
             {
-                AddPlayer(player);
+                if (!IsPlaying(player))
+                {
+                    AddPlayer(player);
+                }
+                else
+                {
+                    throw new InvalidCommandException("Not enough player to start to play.");
+                }
             }
 
             if(!IsAvailable() && !IsPlaying(player))
             {
                 throw new NotAuthorizedException($"Player {player} is not authorized to play in the game {Id}");
             }
+
+            if (State == Status.Created)
+            {
+                State = Status.InProgress;
+            }
+
             await PlayInternally(command, player);
         }
 
