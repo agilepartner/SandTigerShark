@@ -5,7 +5,7 @@ namespace SandTigerShark.GameServer.Services.Games
 {
     internal interface IGameRepository
     {
-        Task<Guid> GetAvailableGame();
+        Task<Guid> GetAvailableGame(GameType gameType);
         Task Save(Game game);
         Task<Game> GetById(Guid gameId);
     }

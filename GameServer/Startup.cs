@@ -8,6 +8,7 @@ using NLog.Extensions.Logging;
 using SandTigerShark.GameServer.Exceptions;
 using SandTigerShark.GameServer.Services;
 using SandTigerShark.GameServer.Services.Configurations;
+using SandTigerShark.GameServer.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SandTigerShark.GameServer

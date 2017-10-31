@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using SandTigerShark.GameServer.Controllers;
 using SandTigerShark.GameServer.Services.Commands;
 using SandTigerShark.GameServer.Services.Dtos;
 using SandTigerShark.GameServer.Services.Games;
@@ -17,10 +16,6 @@ namespace SandTigerShark.Controllers
         private readonly IGameService gameService;
         private readonly IUserRepository userRepository;
 
-        /// <summary>
-        /// Manage your games through this api
-        /// </summary>
-        /// <param name="gameService"></param>
         public GamesController(
             IGameService gameService,
             IUserRepository userRepository)
@@ -29,19 +24,28 @@ namespace SandTigerShark.Controllers
             this.userRepository = userRepository;
         }
 
-        [HttpGet("available")]
+        /// <summary>
+        /// Return an available game for the given GameType.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("available/{gameType}")]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetAvailableGame()
+        public async Task<IActionResult> GetAvailableGame(GameType gameType)
         {
             return await HttpContext.Invoke(userRepository, async (userToken) =>
             {
-                var availableGameId = await gameService.GetAvailableGame(userToken);
+                var availableGameId = await gameService.GetAvailableGame(gameType, userToken);
                 return Ok(availableGameId);
             });
         }
 
+        /// <summary>
+        /// Create a new game with you as 1st player.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -55,6 +59,11 @@ namespace SandTigerShark.Controllers
             });
         }
 
+        /// <summary>
+        /// Returns the state of a given game.
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
         [HttpGet("{gameId}")]
         [ProducesResponseType(typeof(GameStatus), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -68,6 +77,11 @@ namespace SandTigerShark.Controllers
             });
         }
 
+        /// <summary>
+        /// Play a command on a given game.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(Game), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

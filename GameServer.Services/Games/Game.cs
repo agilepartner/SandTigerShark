@@ -7,15 +7,16 @@ namespace SandTigerShark.GameServer.Services.Games
 {
     public abstract class Game
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public abstract GameType Type { get; }
-        public Status State { get; set; }
-        public object LastGameState { get; set; }
-        public Guid? Player1 { get; set; }
-        public Guid? Player2 { get; set; }
+        public Status State { get; protected set; }
+        public object LastGameState { get; protected set; }
+        public Guid? Player1 { get; private set; }
+        public Guid? Player2 { get; private set; }
 
         protected Game(Guid userToken)
         {
+            Id = Guid.NewGuid();
             AddPlayer(userToken);
         }
 

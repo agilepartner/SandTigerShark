@@ -7,7 +7,7 @@ namespace SandTigerShark.GameServer.Services.Games
 {
     public interface IGameService
     {
-        Task<Guid> GetAvailableGame(Guid userToken);
+        Task<Guid> GetAvailableGame(GameType gameType, Guid userToken);
         Task<Guid> CreateGame(CreateGame command, Guid userToken);
         Task<GameStatus> GetGameStatus(Guid gameId, Guid userToken);
         Task Play(Play command, Guid userToken);

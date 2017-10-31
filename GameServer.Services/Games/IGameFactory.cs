@@ -2,7 +2,7 @@
 
 namespace SandTigerShark.GameServer.Services.Games
 {
-    internal interface IGameFactory
+    public interface IGameFactory
     {
         Game Create(GameType type, Guid userToken);
     }

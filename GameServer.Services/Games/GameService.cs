@@ -47,9 +47,9 @@ namespace SandTigerShark.GameServer.Services.Games
             return Task.FromResult(game.Id);
         }
 
-        public async Task<Guid> GetAvailableGame(Guid userToken)
+        public async Task<Guid> GetAvailableGame(GameType gameType, Guid userToken)
         {
-            return await repository.GetAvailableGame();
+            return await repository.GetAvailableGame(gameType);
         }
 
         public async Task<GameStatus> GetGameStatus(Guid gameId, Guid userToken)

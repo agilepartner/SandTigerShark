@@ -28,6 +28,35 @@ namespace SandTigerShark.GameServer.Services.Utils
                             .Where(p => predicate == null || predicate(p))
                             .ToArray();
         }
+
+        private static FieldInfo GetField(T instance, string fieldName)
+        {
+            FieldInfo field = null;
+            Type type = instance.GetType();
+
+            while (field == null && type != null)
+            {
+                field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                type = type.BaseType;
+            }
+
+            if (field == null)
+            {
+                throw new ArgumentException("field");
+            }
+
+            return field;
+        }
+
+        public static void SetFieldValue(T instance, string fieldName, object value)
+        {
+            GetField(instance, fieldName).SetValue(instance, value);
+        }
+
+        public static TValue GetFieldValue<TValue>(T instance, string fieldName)
+        {
+            return (TValue)GetField(instance, fieldName).GetValue(instance);
+        }
     }
 
     public static class Reflect

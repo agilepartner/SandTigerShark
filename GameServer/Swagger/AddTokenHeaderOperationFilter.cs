@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Net;
 
-namespace SandTigerShark.GameServer
+namespace SandTigerShark.GameServer.Swagger
 {
     public class AddTokenHeaderOperationFilter : IOperationFilter
     {

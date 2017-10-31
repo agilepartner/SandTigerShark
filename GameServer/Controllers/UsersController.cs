@@ -17,15 +17,25 @@ namespace SandTigerShark.Controllers
             this.userService = userService;
         }
 
+        /// <summary>
+        /// Create a user based on his user name.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.MethodNotAllowed)]
-        public async Task<IActionResult> GetToken([FromBody]CreateUser command)
+        public async Task<IActionResult> CreateUser([FromBody]CreateUser command)
         {
             var userToken = await userService.CreateUser(command);
             return CreatedAtAction("GetToken", userToken);
         }
 
+        /// <summary>
+        /// Get a user based on it user token.
+        /// </summary>
+        /// <param name="userToken"></param>
+        /// <returns></returns>
         [HttpGet("{userToken}")]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.MethodNotAllowed)]

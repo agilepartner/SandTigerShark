@@ -8,16 +8,22 @@ namespace SandTigerShark.GameServer.Services.Games
 {
     internal class GameRepository : IGameRepository
     {
-        private ConcurrentDictionary<Guid, Game> games = new ConcurrentDictionary<Guid, Game>();
+        private readonly ConcurrentDictionary<Guid, Game> games;
 
-        public Task<Guid> GetAvailableGame()
+        public GameRepository()
         {
-            var availableGame = games.Select(g => g.Value)
+            games = new ConcurrentDictionary<Guid, Game>();
+        }
+
+        public Task<Guid> GetAvailableGame(GameType gameType)
+        {
+            var availableGame = games.Where(g => g.Value.Type == gameType)
+                                     .Select(g => g.Value)
                                      .FirstOrDefault(g => g.IsAvailable());
 
             if(availableGame == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"No available game found for type : {gameType}");
             }
             return Task.FromResult(availableGame.Id);
         }
