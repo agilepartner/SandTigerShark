@@ -6,6 +6,7 @@ using SandTigerShark.GameServer.Tests.TicTacToes;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 
@@ -25,7 +26,7 @@ namespace SandTigerShark.GameServer.Tests.Games
             public class raise_a_not_found_exception : GameRepository_specs
             {
                 [Fact]
-                public async void when_no_game_found_for_a_given_type()
+                public async Task when_no_game_found_for_a_given_type()
                 {
                     var exception = await Assert.ThrowsAsync<NotFoundException>(() => gameRepository.GetAvailableGame(GameType.TicTacToe));
                     exception.Message.Should().Be("No available game found for type : TicTacToe");
@@ -33,7 +34,7 @@ namespace SandTigerShark.GameServer.Tests.Games
             }
 
             [Fact]
-            public async void returns_the_first_available_game_for_a_given_type()
+            public async Task returns_the_first_available_game_for_a_given_type()
             {
                 var ticTacToe = TicTacToeApi.Create();
                 InitializeGamesInRepository(ticTacToe);
@@ -55,7 +56,7 @@ namespace SandTigerShark.GameServer.Tests.Games
             public class raise_a_not_found_exception : get_by_id_should
             {
                 [Fact]
-                public async void when_no_game_found_for_a_given_id()
+                public async Task when_no_game_found_for_a_given_id()
                 {
                     var exception = await Assert.ThrowsAsync<NotFoundException>(() => gameRepository.GetById(gameId));
                     exception.Message.Should().Be("No game found with id : " + gameId);
@@ -63,7 +64,7 @@ namespace SandTigerShark.GameServer.Tests.Games
             }
 
             [Fact]
-            public async void returns_the_game_for_a_given_id()
+            public async Task returns_the_game_for_a_given_id()
             {
                 var ticTacToe = TicTacToeApi.Create();
                 InitializeGamesInRepository(ticTacToe);
@@ -83,14 +84,14 @@ namespace SandTigerShark.GameServer.Tests.Games
             }
 
             [Fact]
-            public async void insert_the_game_when_not_already_in_memory()
+            public async Task insert_the_game_when_not_already_in_memory()
             {
                 await gameRepository.Save(gameToSave);
                 AssertGamesInRepository();
             }
 
             [Fact]
-            public async void update_the_game_when_already_in_memory()
+            public async Task update_the_game_when_already_in_memory()
             {
                 InitializeGamesInRepository(gameToSave);
 

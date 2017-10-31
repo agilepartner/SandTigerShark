@@ -57,6 +57,39 @@ namespace SandTigerShark.GameServer.Services.Utils
         {
             return (TValue)GetField(instance, fieldName).GetValue(instance);
         }
+
+        public static PropertyInfo GetProperty(Expression<Func<T>> property)
+        {
+            var memberExpression = property.Body as MemberExpression;
+            var propertyInfo = memberExpression != null ? memberExpression.Member as PropertyInfo : null;
+
+            if (propertyInfo == null)
+            {
+                throw new ArgumentException("property");
+            }
+
+
+            return propertyInfo;
+        }
+
+        private static PropertyInfo GetProperty(T instance, string propertyName)
+        {
+            PropertyInfo property = null;
+            Type type = instance.GetType();
+
+            while (property == null && type != null)
+            {
+                property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                type = type.BaseType;
+            }
+
+            return property;
+        }
+
+        public static void SetPropertyValue(T instance, string propertyName, object value)
+        {
+            GetProperty(instance, propertyName).SetValue(instance, value);
+        }
     }
 
     public static class Reflect

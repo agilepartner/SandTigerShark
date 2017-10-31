@@ -39,8 +39,8 @@ namespace SandTigerShark.GameServer.Services.TicTacToes
         {
             int position = 0;
 
-            if(command.Command == null ||
-                !int.TryParse(command.Command.ToString(), out position))
+            if(command.Instruction == null ||
+                !int.TryParse(command.Instruction.ToString(), out position))
             {
                 throw new InvalidCommandException("Position is required in the command.");
             }

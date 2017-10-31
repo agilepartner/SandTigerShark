@@ -13,15 +13,15 @@ namespace SandTigerShark.GameServer.Services.Games
     {
         private readonly IGameFactory factory;
         private readonly IGameRepository repository;
-        private readonly IReadOnlyList<string> availableGameTypes;
+        private readonly IReadOnlyList<GameType> availableGameTypes;
 
         public GameService(
             IGameFactory gameFactory,
             IGameRepository gameRepository)
         {
-            this.factory = gameFactory;
-            this.repository = gameRepository;
-            availableGameTypes = Reflect.GetEnumNames(typeof(GameType)).ToList().AsReadOnly();
+            factory = gameFactory;
+            repository = gameRepository;
+            availableGameTypes = Enum.GetValues(typeof(GameType)).Cast<GameType>().ToList().AsReadOnly();
         }
 
         public Task<Guid> CreateGame(CreateGame command, Guid userToken)
@@ -31,17 +31,12 @@ namespace SandTigerShark.GameServer.Services.Games
                 throw new InvalidCommandException($"CreateGame command is required");
             }
 
-            if (string.IsNullOrEmpty(command.Type))
-            {
-                throw new InvalidCommandException($"{nameof(command.Type)} is required in order to create a new game");
-            }
-
             if(!availableGameTypes.Contains(command.Type))
             {
-                throw new GameTypeNotAvailableException(command.Type);
+                throw new GameTypeNotAvailableException(command.ToString());
             }
 
-            var game = factory.Create(Enum.Parse<GameType>(command.Type), userToken);
+            var game = factory.Create(command.Type, userToken);
             repository.Save(game);
 
             return Task.FromResult(game.Id);
@@ -63,25 +58,26 @@ namespace SandTigerShark.GameServer.Services.Games
             };
         }
 
-        public async Task Play(Play command, Guid userToken)
+        public async Task Play(Guid gameId, Play command, Guid userToken)
         {
             if (command == null)
             {
                 throw new InvalidCommandException($"Play command is required");
             }
 
-            if (command.Command == null)
+            if (command.Instruction == null)
             {
-                throw new InvalidCommandException($"{nameof(command.Command)} is required");
+                throw new InvalidCommandException($"{nameof(command.Instruction)} is required");
             }
 
-            var game = await repository.GetById(command.GameId);
+            var game = await repository.GetById(gameId);
 
             if(game.IsAvailable())
             {
                 throw new InvalidCommandException($"The game is still waiting for player(s)");
             }
             await game.Play(command, userToken);
+            await repository.Save(game);
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace SandTigerShark.GameServer.Services.Commands
+﻿using SandTigerShark.GameServer.Services.Games;
+
+namespace SandTigerShark.GameServer.Services.Commands
 {
     public class CreateGame
     {
-        public string Type { get; set; }
+        public GameType Type { get; set; }
     }
 }

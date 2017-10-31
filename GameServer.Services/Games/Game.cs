@@ -16,6 +16,7 @@ namespace SandTigerShark.GameServer.Services.Games
 
         protected Game(Guid userToken)
         {
+            State = Status.Created;
             Id = Guid.NewGuid();
             AddPlayer(userToken);
         }
@@ -61,7 +62,12 @@ namespace SandTigerShark.GameServer.Services.Games
 
         public async Task Play(Play command, Guid player)
         {
-            if(!IsPlaying(player))
+            if(IsAvailable() && !IsPlaying(player))
+            {
+                AddPlayer(player);
+            }
+
+            if(!IsAvailable() && !IsPlaying(player))
             {
                 throw new NotAuthorizedException($"Player {player} is not authorized to play in the game {Id}");
             }

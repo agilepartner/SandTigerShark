@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SandTigerShark.GameServer.Services.Games
 {
-    internal interface IGameRepository
+    public interface IGameRepository
     {
         Task<Guid> GetAvailableGame(GameType gameType);
         Task Save(Game game);

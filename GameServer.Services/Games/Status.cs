@@ -2,6 +2,7 @@
 {
     public enum Status
     {
+        Created,
         InProgress,
         Lost,
         Won,

@@ -23,7 +23,7 @@ namespace SandTigerShark.GameServer.Tests.TicTacToes
             ticTacToe = new TicTacToe(restProxy, configuration, creatorToken);
         }
 
-        [Fact]
+        /*[Fact]
         public async void it_should_throw_an_ArgumentNullException_for_a_null_command()
         {
             var type = typeof(ArgumentNullException);
@@ -38,6 +38,6 @@ namespace SandTigerShark.GameServer.Tests.TicTacToes
 
             A.CallTo(() => restProxy.PostAsync(configuration.TicTacToe, 
                 A<Play>.That.Matches(p => p.Player == 1 && p.Position == 1), null)).MustHaveHappened();
-        }
+        }*/
     }
 }
