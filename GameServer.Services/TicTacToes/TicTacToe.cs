@@ -52,8 +52,8 @@ namespace SandTigerShark.GameServer.Services.TicTacToes
                 Position = position
             };
             //TODO handle exception properly here
-            var boardState = await restProxy.PostAsync(url, play);
-            LastGameState = boardState;
+            var result = await restProxy.PostAsync<Play, PlayResult>(url, play);
+            LastGameState = result.Board;
         }
     }
 }
