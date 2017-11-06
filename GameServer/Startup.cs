@@ -11,6 +11,7 @@ using SandTigerShark.GameServer.Services.Configurations;
 using SandTigerShark.GameServer.Services.Http;
 using SandTigerShark.GameServer.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace SandTigerShark.GameServer
 {
@@ -36,7 +37,13 @@ namespace SandTigerShark.GameServer
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "SandTigerShark api", Version = "v1" });
-                c.IncludeXmlComments($"{ApplicationEnvironment.ApplicationBasePath}\\SandTigerShark.GameServer.xml");
+
+                var xmlDocument = $"{ApplicationEnvironment.ApplicationBasePath}\\SandTigerShark.GameServer.xml";
+
+                if(File.Exists(xmlDocument))
+                {
+                    c.IncludeXmlComments(xmlDocument);
+                }
                 c.DescribeAllEnumsAsStrings();
                 c.OperationFilter<AddTokenHeaderOperationFilter>();
             });
