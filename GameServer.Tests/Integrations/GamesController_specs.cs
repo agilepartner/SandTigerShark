@@ -159,7 +159,7 @@ namespace SandTigerShark.GameServer.Tests.Integrations
         {
             public class return_OK : put_play_should
             {
-                [Fact]
+                // Integration test depending on the Azure function 
                 public async Task when_game_started_and_instruction_valid()
                 {
                     var command = new CreateGame { Type = GameType.TicTacToe };

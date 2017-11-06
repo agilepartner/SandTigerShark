@@ -247,3 +247,4 @@ ModelManifest.xml
 
 # Sql server data tools binary file
 *.jfm
+/GameServer.Tests/test-results.xml
