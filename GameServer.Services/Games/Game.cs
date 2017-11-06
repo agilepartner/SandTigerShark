@@ -13,6 +13,7 @@ namespace SandTigerShark.GameServer.Services.Games
         public object LastGameState { get; protected set; }
         public Guid? Player1 { get; private set; }
         public Guid? Player2 { get; private set; }
+        public Guid? Winner { get; protected set; }
 
         protected Game(Guid userToken)
         {
@@ -77,6 +78,17 @@ namespace SandTigerShark.GameServer.Services.Games
             if(!IsAvailable() && !IsPlaying(player))
             {
                 throw new NotAuthorizedException($"Player {player} is not authorized to play in the game {Id}");
+            }
+
+            if(State == Status.GameOver)
+            {
+                var message = "The game is over.";
+
+                if(Winner.HasValue)
+                {
+                    message += $" The winner is : {Winner.Value}";
+                }
+                throw new InvalidCommandException(message);
             }
 
             if (State == Status.Created)

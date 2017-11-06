@@ -37,13 +37,7 @@ namespace SandTigerShark.GameServer.Services.TicTacToes
         
         protected override async Task PlayInternally(Commands.Play command, Guid player)
         {
-            int position = 0;
-
-            if(command.Instruction == null ||
-                !int.TryParse(command.Instruction.ToString(), out position))
-            {
-                throw new InvalidCommandException("Position is required in the command.");
-            }
+            int position = CheckCommand(command);
 
             var play = new Play
             {
@@ -51,9 +45,40 @@ namespace SandTigerShark.GameServer.Services.TicTacToes
                 Player = GetPlayerNumber(player),
                 Position = position
             };
-            //TODO handle exception properly here
+
             var result = await restProxy.PostAsync<Play, PlayResult>(url, play);
+            HandleResult(result);
             LastGameState = result.Board;
+        }
+
+        private void HandleResult(PlayResult result)
+        {
+            if (result.GameOver)
+            {
+                State = Status.GameOver;
+
+                if (result.Winner.HasValue)
+                {
+                    Winner = result.Winner == 1 ? Player1 : Player2;
+                }
+            }
+        }
+
+        private static int CheckCommand(Commands.Play command)
+        {
+            int position = 1;
+
+            if (command.Instruction == null ||
+                !int.TryParse(command.Instruction.ToString(), out position))
+            {
+                throw new InvalidCommandException("Position is required in the command.");
+            }
+
+            if (position < 1 || position > 9)
+            {
+                throw new InvalidCommandException("Position must be in range [1;9].");
+            }
+            return position;
         }
     }
 }

@@ -4,8 +4,6 @@
     {
         Created,
         InProgress,
-        Lost,
-        Won,
-        Draw
+        GameOver
     }
 }

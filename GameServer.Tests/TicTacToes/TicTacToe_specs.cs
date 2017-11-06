@@ -83,6 +83,26 @@ namespace SandTigerShark.GameServer.Tests.TicTacToes
                 }
 
                 [Fact]
+                public async void when_position_is_lower_than_1()
+                {
+                    var command = new Services.Commands.Play
+                    {
+                        Instruction = 0
+                    };
+                    await Assert.ThrowsAsync<InvalidCommandException>(() => ticTacToe.Play(command, creatorToken));
+                }
+
+                [Fact]
+                public async void when_position_is_greater_than_9()
+                {
+                    var command = new Services.Commands.Play
+                    {
+                        Instruction = 10
+                    };
+                    await Assert.ThrowsAsync<InvalidCommandException>(() => ticTacToe.Play(command, creatorToken));
+                }
+
+                [Fact]
                 public async void when_only_one_player()
                 {
                     var command = new Services.Commands.Play
@@ -90,6 +110,24 @@ namespace SandTigerShark.GameServer.Tests.TicTacToes
                         Instruction = 4
                     };
                     await Assert.ThrowsAsync<InvalidCommandException>(() => ticTacToe.Play(command, creatorToken));
+                }
+
+                [Fact]
+                public async void when_the_game_is_over()
+                {
+                    var command = new Services.Commands.Play
+                    {
+                        Instruction = 4
+                    };
+
+                    var exception = await Assert.ThrowsAsync<InvalidCommandException>(async () =>
+                    {
+                        ticTacToe.WithPlayer2()
+                                 .Won();
+                        
+                        await ticTacToe.Play(command, creatorToken);
+                    });
+                    exception.Message.Should().Be($"The game is over. The winner is : {ticTacToe.Player1}");
                 }
             }
         }
@@ -105,7 +143,7 @@ namespace SandTigerShark.GameServer.Tests.TicTacToes
 
             await ticTacToe.Play(command, creatorToken);
 
-            A.CallTo(() => restProxy.PostAsync(A<string>.Ignored,
+            A.CallTo(() => restProxy.PostAsync<Play, PlayResult>(A<string>.Ignored,
                 A<Play>.That.Matches(p => p.Position == 1 && p.Player == 1), 
                 null)).MustHaveHappened(Repeated.Exactly.Once);
             ticTacToe.State.Should().Be(Status.InProgress);
