@@ -14,3 +14,6 @@ http://sandtigershark.azurewebsites.net
 
 Firebase :  
 https://console.firebase.google.com/project/sandtigershark-dev/overview
+
+Api :<br/>
+http://sandtigershark.azurewebsites.net/swagger/
